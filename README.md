@@ -9,7 +9,7 @@ I got bored with nardcoding the sample json api response in tests. I you know go
 
 # Instalation
 
-You can downloaad the binaries for your respective operating system  [Download apidemic]()
+You can downloaad the binaries for your respective operating system  [Download apidemic](https://github.com/gernest/apidemic/releases/latest)
 
 Then put the downloaaded binary somewhere in your system path.
 
