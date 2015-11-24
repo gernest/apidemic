@@ -1,0 +1,32 @@
+{
+  "endpoint": "test",
+  "payload": {
+    "name: first_name": "anton",
+    "age: digits_n,max=2": 29,
+    "nothing:": null,
+    "true": true,
+    "false": false,
+    "list:word,max=3": [
+      "first",
+      "second"
+    ],
+    "list2": [
+      {
+        "street:street": "Street 42",
+        "city:city": "Stockholm"
+      },
+      {
+        "street": "Street 42",
+        "city": "Stockholm"
+      }
+    ],
+    "address": {
+      "street:street": "Street 42",
+      "city:city": "Stockholm"
+    },
+    "country": {
+      "name:ountry": "Sweden"
+    }
+  }
+
+}

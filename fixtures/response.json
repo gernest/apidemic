@@ -1,0 +1,28 @@
+{
+  "name": "anton",
+  "age": 29,
+  "nothing": null,
+  "true": true,
+  "false": false,
+  "list": [
+      "first",
+      "second"
+    ],
+  "list2": [
+    {
+      "street": "Street 42",
+      "city": "Stockholm"
+      },
+    {
+      "street": "Street 42",
+      "city": "Stockholm"
+      }
+    ],
+  "address": {
+    "street": "Street 42",
+    "city": "Stockholm"
+  },
+  "country": {
+    "name": "Sweden"
+  }
+}
