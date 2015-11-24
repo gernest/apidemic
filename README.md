@@ -15,7 +15,7 @@ Then put the downloaaded binary somewhere in your system path.
 
 Alternatively, if you have golang installed
 
-	go get fithub.com/gernest/apidemic/cmd/apidemic
+	go get github.com/gernest/apidemic/cmd/apidemic
 	
 
 Now you can start the service like this 
