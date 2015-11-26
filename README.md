@@ -201,6 +201,12 @@ brand | brand
  year | year 
  zip | zip 
 
+# Contributing
+
+Start with clicking the star button to make the author and his neighbors happy. Then fork the repository and submit a pull request for whatever change you want to be added to this project.
+
+If you have any questions, just open an issue.
+
 # Author
 Geofrey Ernest
 
