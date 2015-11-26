@@ -2,7 +2,6 @@ package apidemic
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
@@ -59,7 +58,6 @@ func RegisterEndpoint(w http.ResponseWriter, r *http.Request) {
 		RenderJSON(w, http.StatusInternalServerError, NewResponse(err.Error()))
 		return
 	}
-	log.Println(a.Endpoint)
 	store.Set(a.Endpoint, obj, maxItemTime)
 	RenderJSON(w, http.StatusOK, NewResponse("cool"))
 }

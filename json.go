@@ -65,14 +65,6 @@ func (o *Object) Set(key string, val Value) {
 	o.Data[key] = val
 }
 
-func getTags(key string) (string, []string) {
-	c := strings.SplitN(key, ":", 1)
-	if len(c) < 2 {
-		return key, nil
-	}
-	t := strings.Split(c[1], ",")
-	return c[0], t
-}
 
 func (v *Object) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.Data)
