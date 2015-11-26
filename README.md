@@ -5,7 +5,7 @@ Apidemic is a service for generating fake JSON API response. You first register 
 This is experimental, so take it with a grain of salt.
 
 # Motivation
-I got bored with hardcoding the sample json api response in tests. I you know golang, you can benefit by using the library, I have included a router that you can use to run disposable servers in your tests.
+I got bored with hardcoding the sample json api response in tests. If you know golang, you can benefit by using the library, I have included a router that you can use to run disposable servers in your tests.
 
 # Instalation
 
