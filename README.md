@@ -103,6 +103,15 @@ I f your post request is submitted you are good to ask for the response with fak
 
 So, every GET call to `/api/test` will return the api response with fake data.
 
+# Tags
+Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
+
+You add tags to object keys. For instance if you have a json object `{ "user_name": "gernest"}`. If you want to have fake username  then you can annotate the key by addimg user_name tag like this `{ "user_name:user_name": "gernest"}`.
+
+So,  json keys can be annotated by adding the `:` symbol then followed by comma separated list of tags. The firs entry after `:` is for the tag type, the following entries are in the form `key=value` which will be the extra information to fine tune your fake data. Please see the example above to see how tags are used.
+
+Apidemic comes shiped with a large number of tags, meaning it is capable to geerate a wide range of fake information.
+
 # Author
 Geofrey Ernest
 
