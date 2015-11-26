@@ -112,6 +112,95 @@ So,  json keys can be annotated by adding the `:` symbol then followed by comma 
 
 Apidemic comes shiped with a large number of tags, meaning it is capable to geerate a wide range of fake information.
 
+These are different tags that generate different fake data
+
+ Tag | Details( data generated)
+------|--------
+brand | brand 
+ character | character 
+ characters | characters 
+ characters_n | characters n 
+ city | city 
+ color | color 
+ company | company 
+ continent | continent 
+ country | country 
+ credit_card_num | credit card num 
+ currency | currency 
+ currency_code | currency code 
+ day | day 
+ digits | digits 
+ digits_n | digits n 
+ domain_name | domain name 
+ domain_zone | domain zone 
+ email_address | email address 
+ email_body | email body 
+ female_first_name | female first name 
+ female_full_name | female full name 
+ female_full_name_with_prefix | female full name with prefix 
+ female_full_name_with_suffix | female full name with suffix 
+ female_last_name | female last name 
+ female_last_name_pratronymic | female last name pratronymic 
+ first_name | first name 
+ full_name | full name 
+ full_name_with_prefix | full name with prefix 
+ full_name_with_suffix | full name with suffix 
+ gender | gender 
+ gender_abrev | gender abrev 
+ hex_color | hex color 
+ hex_color_short | hex color short 
+ i_pv_4 | i pv 4 
+ industry | industry 
+ job_title | job title 
+ language | language 
+ last_name | last name 
+ latitude_degrees | latitude degrees 
+ latitude_direction | latitude direction 
+ latitude_minutes | latitude minutes 
+ latitude_seconds | latitude seconds 
+ latitude | latitude 
+ longitude | longitude 
+ longitude_degrees | longitude degrees 
+ longitude_direction | longitude direction 
+ longitude_minutes | longitude minutes 
+ longitude_seconds | longitude seconds 
+ male_first_name | male first name 
+ male_full_name_with_prefix | male full name with prefix 
+ male_full_name_with_suffix | male full name with suffix 
+ male_last_name | male last name 
+ male_pratronymic | male pratronymic 
+ model | model 
+ month | month 
+ month_num | month num 
+ month_short | month short 
+ paragraph | paragraph 
+ patagraphs | patagraphs 
+ patagraphs_n | patagraphs n 
+ password | password 
+ patronymic | patronymic 
+ phone | phone 
+ product | product 
+ product_name | product name 
+ sentence | sentence 
+ sentences | sentences 
+ sentences_n | sentences n 
+ simple_pass_word | simple pass word 
+ state | state 
+ state_abbrev | state abbrev 
+ street | street 
+ street_address | street address 
+ title | title 
+ top_level_domain | top level domain 
+ user_name | user name 
+ week_day | week day 
+ week_day_short | week day short 
+ week_day_num | week day num 
+ word | word 
+ words | words 
+ words_n | words n 
+ year | year 
+ zip | zip 
+
 # Author
 Geofrey Ernest
 

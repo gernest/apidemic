@@ -3,11 +3,15 @@ package apidemic
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+
+	"github.com/fatih/structs"
 )
 
 func TestAPI(t *testing.T) {
@@ -48,4 +52,11 @@ func jsonRequest(method string, path string, body interface{}) *http.Request {
 	}
 	req.Header.Set("Contet-Type", "application/json")
 	return req
+}
+
+func TestCrap(t *testing.T) {
+	s := structs.New(fieldTags)
+	for _, v := range s.Values() {
+		fmt.Printf(" %s | %s \n", v, strings.Replace(fmt.Sprint(v), "_", " ", -1))
+	}
 }
