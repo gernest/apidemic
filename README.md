@@ -1,6 +1,6 @@
 # apidemic [![Build Status](https://travis-ci.org/gernest/apidemic.svg)](https://travis-ci.org/gernest/apidemic)
 
-Apidemic is a service for generating fake JSON API response. You first register the sample JSON response, and apidemic will serve that response with random fake data.
+Apidemic is a service for generating fake JSON response. You first register the sample JSON response, and apidemic will serve that response with random fake data.
 
 This is experimental, so take it with a grain of salt.
 
