@@ -9,9 +9,9 @@ I got bored with hardcoding the sample json api response in tests. If you know g
 
 # Instalation
 
-You can downloaad the binaries for your respective operating system  [Download apidemic](https://github.com/gernest/apidemic/releases/latest)
+You can download the binaries for your respective operating system  [Download apidemic](https://github.com/gernest/apidemic/releases/latest)
 
-Then put the downloaaded binary somewhere in your system path.
+Then put the downloaded binary somewhere in your system path.
 
 Alternatively, if you have golang installed
 
