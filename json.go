@@ -94,7 +94,7 @@ func fakeArray(v *Value) Value {
 		origin := arrV[0]
 		n := len(arrV)
 
-		if max, ok := v.Tags["max"]; ok {
+		if max, ok := v.Tags.Get("max"); ok {
 			maxV, err := strconv.Atoi(max)
 			if err != nil {
 				return *v
