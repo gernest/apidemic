@@ -119,18 +119,18 @@ These are different tags that generate different fake data
 brand | brand 
  character | character 
  characters | characters 
- characters_n | characters n 
+ characters_n | characters of maximum length n
  city | city 
  color | color 
  company | company 
  continent | continent 
  country | country 
- credit_card_num | credit card num 
+ credit_card_num | credit card number 
  currency | currency 
  currency_code | currency code 
  day | day 
  digits | digits 
- digits_n | digits n 
+ digits_n | digits of maximum number n
  domain_name | domain name 
  domain_zone | domain zone 
  email_address | email address 
@@ -175,7 +175,7 @@ brand | brand
  month_short | month short 
  paragraph | paragraph 
  patagraphs | patagraphs 
- patagraphs_n | patagraphs n 
+ patagraphs_n | patagraphs of maximum n
  password | password 
  patronymic | patronymic 
  phone | phone 
@@ -183,7 +183,7 @@ brand | brand
  product_name | product name 
  sentence | sentence 
  sentences | sentences 
- sentences_n | sentences n 
+ sentences_n | sentences of maximum n
  simple_pass_word | simple pass word 
  state | state 
  state_abbrev | state abbrev 
@@ -197,7 +197,7 @@ brand | brand
  week_day_num | week day num 
  word | word 
  words | words 
- words_n | words n 
+ words_n | words of maximum n
  year | year 
  zip | zip 
 
