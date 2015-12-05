@@ -80,7 +80,7 @@ func parseJSONData(src io.Reader) (*Object, error) {
 }
 
 func fakeString(v *Value) Value {
-	return Value{Data: genFakeData(v, "string")}
+	return Value{Data: genFakeData(v)}
 }
 
 func fakeArray(v *Value) Value {
@@ -111,7 +111,7 @@ func fakeArray(v *Value) Value {
 }
 
 func fakeFloats(v *Value) Value {
-	return Value{Data: genFakeData(v, "float")}
+	return Value{Data: genFakeData(v)}
 }
 
 func fakeObject(v *Value) Value {
@@ -120,7 +120,7 @@ func fakeObject(v *Value) Value {
 	return NewValue(obj.Data)
 }
 
-func genFakeData(v *Value, kind string) interface{} {
+func genFakeData(v *Value) interface{} {
 	if len(v.Tags) == 0 {
 		return v.Data
 	}
