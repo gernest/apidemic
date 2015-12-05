@@ -10,7 +10,7 @@ import (
 )
 
 var helperTags = map[string]string{
-	"age": "digitsN, max=2",
+	"age": "digits_n, max=2",
 }
 
 type Value struct {
@@ -64,7 +64,6 @@ func (o *Object) Load(src map[string]interface{}) error {
 func (o *Object) Set(key string, val Value) {
 	o.Data[key] = val
 }
-
 
 func (v *Object) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.Data)
