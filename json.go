@@ -9,10 +9,6 @@ import (
 	"github.com/icrowley/fake"
 )
 
-var helperTags = map[string]string{
-	"age": "digits_n, max=2",
-}
-
 type Value struct {
 	Tags Tags
 	Data interface{}
