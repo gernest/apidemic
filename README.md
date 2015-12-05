@@ -103,6 +103,25 @@ I f your post request is submitted you are good to ask for the response with fak
 
 So, every GET call to `/api/test` will return the api response with fake data.
 
+# Routes 
+Apidemic server has only three http routes
+
+### /
+This is the home path. It only renders information about the apidemic server
+
+### /register
+This is where you register endpoints. You POST the annotated sample json here. The request body should be a json object of signature.
+
+```json
+{
+	"endpoint":"my_endpoint",
+	"payload": { ANNOTATED__SAMPLE_JSON_GOES_HERE },
+}
+```
+
+#### /api/{REGISTERED_ENDPOINT_GOES_HERE}
+Every GET request on this route will render a fake json object for the sample registered in this endpoint
+
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
 
