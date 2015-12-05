@@ -1,6 +1,12 @@
 package apidemic
 
-import "strings"
+import (
+	"errors"
+	"strconv"
+	"strings"
+)
+
+var ErrTagNotFound = errors.New("apidemic: Tag not found")
 
 var fieldTags = struct {
 	Brand                     string
@@ -111,23 +117,46 @@ var fieldTags = struct {
 	"week_day_short", "week_day_num", "word", "words", "words_n", "year", "zip",
 }
 
+//Tags stores metadata about values
 type Tags map[string]string
 
+// Load parses src and extacts tags from it. The src is a string with comma separated content.
+// 	Example "character_n,max=30"
+//
+// The first tag, is the value type information, the rest is extra information to fine tune
+// the generated fake value.
+//
+// For instance in the example above, the value is characters, where max=30 limits the number of characters
+// to the maximum size of 30.
 func (t Tags) Load(src string) {
 	ss := strings.Split(src, ",")
 	first := strings.TrimSpace(ss[0])
-
-	if len(ss) < 2 {
+	if len(ss) > 0 {
 		t["type"] = first
-	}
-
-	for _, v := range ss[0:] {
-		ts := strings.SplitN(v, "=", 1)
-		if len(ts) < 2 {
-			t[v] = ""
-			continue
+		rest := ss[1:]
+		for _, v := range rest {
+			ts := strings.Split(v, "=")
+			if len(ts) < 2 {
+				t[v] = ""
+				continue
+			}
+			t[strings.TrimSpace(ts[0])] = strings.TrimSpace(ts[1])
 		}
-		t[strings.TrimSpace(ts[0])] = strings.TrimSpace(ts[1])
 	}
 
+}
+
+// Get returns the value for tag key.
+func (t Tags) Get(key string) (string, bool) {
+	k, ok := t[key]
+	return k, ok
+}
+
+// Int returns an in value for tag key.
+func (t Tags) Int(key string) (int, error) {
+	tag, ok := t.Get(key)
+	if !ok {
+		return 0, ErrTagNotFound
+	}
+	return strconv.Atoi(tag)
 }
