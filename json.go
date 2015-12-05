@@ -129,7 +129,7 @@ func genFakeData(v *Value, kind string) interface{} {
 		return v.Data
 	}
 
-	typ, ok := v.Tags["type"]
+	typ, ok := v.Tags.Get("type")
 	if !ok {
 		return v.Data
 	}
@@ -141,7 +141,11 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Characters:
 		return fieldTags.Characters
 	case fieldTags.CharactersN:
-		return fake.CharactersN(5)
+		max := 5
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return fake.CharactersN(max)
 	case fieldTags.City:
 		return fake.City()
 	case fieldTags.Color:
@@ -153,7 +157,8 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Country:
 		return fake.Country()
 	case fieldTags.CreditCardNum:
-		fake.CreditCardNum("vendor")
+		vendor, _ := v.Tags.Get("vendor")
+		fake.CreditCardNum(vendor)
 	case fieldTags.Currency:
 		fake.Currency()
 	case fieldTags.CurrencyCode:
@@ -163,7 +168,11 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Digits:
 		return fake.Digits()
 	case fieldTags.DigitsN:
-		return fake.DigitsN(5)
+		max := 5
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return fake.DigitsN(max)
 	case fieldTags.DomainName:
 		return fake.DomainName()
 	case fieldTags.DomainZone:
@@ -251,9 +260,33 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Patagraphs:
 		return fake.Paragraphs()
 	case fieldTags.PatagraphsN:
-		return fake.ParagraphsN(4)
+		max := 5
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return fake.ParagraphsN(max)
 	case fieldTags.Password:
-	//return fake.Password()
+		var (
+			atLeast                                = 5
+			atMost                                 = 8
+			allowUpper, allowNumeric, allowSpecial = true, true, true
+		)
+		if least, err := v.Tags.Int("at_least"); err == nil {
+			atLeast = least
+		}
+		if most, err := v.Tags.Int("at_most"); err == nil {
+			atMost = most
+		}
+		if upper, err := v.Tags.Bool("upper"); err == nil {
+			allowUpper = upper
+		}
+		if numeric, err := v.Tags.Bool("numeric"); err == nil {
+			allowNumeric = numeric
+		}
+		if special, err := v.Tags.Bool("special"); err == nil {
+			allowSpecial = special
+		}
+		return fake.Password(atLeast, atMost, allowUpper, allowNumeric, allowSpecial)
 	case fieldTags.Patronymic:
 		return fake.Patronymic()
 	case fieldTags.Phone:
@@ -267,7 +300,11 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Sentences:
 		return fake.Sentence()
 	case fieldTags.SentencesN:
-		return fake.SentencesN(4)
+		max := 5
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return fake.SentencesN(max)
 	case fieldTags.SimplePassWord:
 		return fake.SimplePassword()
 	case fieldTags.State:
@@ -295,7 +332,11 @@ func genFakeData(v *Value, kind string) interface{} {
 	case fieldTags.Words:
 		return fake.Words()
 	case fieldTags.WordsN:
-		return fake.WordsN(4)
+		max := 5
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return fake.WordsN(max)
 	case fieldTags.Year:
 	//return fake.Year()
 	case fieldTags.Zip:

@@ -160,3 +160,12 @@ func (t Tags) Int(key string) (int, error) {
 	}
 	return strconv.Atoi(tag)
 }
+
+// Bool returns a boolean value for tag key
+func (t Tags) Bool(key string) (bool, error) {
+	tag, ok := t.Get(key)
+	if !ok {
+		return false, ErrTagNotFound
+	}
+	return strconv.ParseBool(tag)
+}
