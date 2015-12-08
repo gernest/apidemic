@@ -220,6 +220,51 @@ brand | brand
  year | year 
  zip | zip 
 
+# Benchmark
+This Benchmark uses [boom](https://github.com/rakyll/boom). After registering the sample json above run the following command(Note this is just to check things out, my machine is very slow)
+
+```bash
+ boom -n 1000 -c 100 http://localhost:3000/api/test
+```
+
+The result
+```bash
+
+Summary:
+  Total:	0.6442 secs.
+  Slowest:	0.1451 secs.
+  Fastest:	0.0163 secs.
+  Average:	0.0586 secs.
+  Requests/sec:	1552.3336
+  Total Data Received:	39000 bytes.
+  Response Size per Request:	39 bytes.
+
+Status code distribution:
+  [200]	1000 responses
+
+Response time histogram:
+  0.016 [1]	|
+  0.029 [121]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.042 [166]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.055 [192]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.068 [192]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.081 [168]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.094 [69]	|∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  0.106 [41]	|∎∎∎∎∎∎∎∎
+  0.119 [22]	|∎∎∎∎
+  0.132 [21]	|∎∎∎∎
+  0.145 [7]	|∎
+
+Latency distribution:
+  10% in 0.0280 secs.
+  25% in 0.0364 secs.
+  50% in 0.0560 secs.
+  75% in 0.0751 secs.
+  90% in 0.0922 secs.
+  95% in 0.1066 secs.
+  99% in 0.1287 secs.
+```
+
 # Contributing
 
 Start with clicking the star button to make the author and his neighbors happy. Then fork the repository and submit a pull request for whatever change you want to be added to this project.
