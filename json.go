@@ -216,7 +216,7 @@ func genFakeData(v *Value) interface{} {
 	case fieldTags.LastName:
 		return fake.LastName()
 	case fieldTags.LatitudeDegrees:
-		return fake.LatitudeDegress()
+		return fake.LatitudeDegrees()
 	case fieldTags.LatitudeDirection:
 		return fake.LatitudeDirection()
 	case fieldTags.LatitudeMinutes:
@@ -224,7 +224,7 @@ func genFakeData(v *Value) interface{} {
 	case fieldTags.LatitudeSeconds:
 		return fake.LatitudeSeconds()
 	case fieldTags.Latitude:
-		return fake.Latitute()
+		return fake.Latitude()
 	case fieldTags.LongitudeDegrees:
 		return fake.LongitudeDegrees()
 	case fieldTags.LongitudeDirection:
