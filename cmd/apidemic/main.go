@@ -36,7 +36,7 @@ func main() {
 					Name:   "port",
 					Usage:  "http port to run",
 					Value:  3000,
-					EnvVar: "POSRT",
+					EnvVar: "PORT",
 				},
 			},
 		},
