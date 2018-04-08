@@ -90,10 +90,9 @@ If you have already started apidemic server you can register that response by ma
       "city:city": "Stockholm"
     },
     "country": {
-      "name:ountry": "Sweden"
+      "name:country": "Sweden"
     }
   }
-
 }
 ```
 
@@ -121,6 +120,22 @@ This is where you register endpoints. You POST the annotated sample JSON here. T
 
 #### /api/{REGISTERED_ENDPOINT_GOES_HERE}
 Every GET request on this route will render a fake JSON object for the sample registered in this endpoint.
+
+#### Other HTTP Methods
+
+In case you need to mimic endpoints which respond to requests other than GET then make sure to add a `http_method` key with the required method name into your API description.
+
+```json
+{
+  "endpoint": "test",
+  "http_method": "POST",
+  "payload": {
+    "name: first_name": "anton"
+  }
+}
+```
+
+Currently supported HTTP methods are: `OPTIONS`, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, default is `GET`. Please open an issue if you think there should be others added.
 
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
