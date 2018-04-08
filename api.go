@@ -119,7 +119,7 @@ func DynamicEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseText := fmt.Sprintf("apidemic: %s has no %s endpoint", vars["endpoint"], r.Method)
-	RenderJSON(w, http.StatusNotFound, NewResponse(responseText)
+	RenderJSON(w, http.StatusNotFound, NewResponse(responseText))
 }
 
 // NewResponse helper for response JSON message
