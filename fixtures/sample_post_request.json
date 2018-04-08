@@ -1,5 +1,6 @@
 {
   "endpoint": "test",
+  "http_method": "POST",
   "payload": {
     "name: first_name": "anton",
     "age: digits_n,max=2": 29,

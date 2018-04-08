@@ -34,7 +34,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.IntFlag{
 					Name:   "port",
-					Usage:  "http port to run",
+					Usage:  "HTTP port to run",
 					Value:  3000,
 					EnvVar: "PORT",
 				},
