@@ -137,6 +137,10 @@ In case you need to mimic endpoints which respond to requests other than GET the
 
 Currently supported HTTP methods are: `OPTIONS`, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, default is `GET`. Please open an issue if you think there should be others added.
 
+### Registering endpoints automatically
+
+The service will scan the `./endpoints/` directory relative to the currenct working directory on startup. You can change the directory to be scanned by adding a flag `--endpoint-dir=ENDPOINT_DIR`.
+
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
 

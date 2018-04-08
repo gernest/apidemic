@@ -12,7 +12,7 @@ import (
 )
 
 // Version is the version of apidemic. Apidemic uses semver.
-const Version = "0.3"
+const Version = "0.5"
 
 var maxItemTime = cache.DefaultExpiration
 
