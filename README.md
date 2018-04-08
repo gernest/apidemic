@@ -122,8 +122,7 @@ This is where you register endpoints. You POST the annotated sample JSON here. T
 Every GET request on this route will render a fake JSON object for the sample registered in this endpoint.
 
 #### Other HTTP Methods
-
-In case you need to mimic endpoints which respond to requests other than GET then make sure to add a `http_method` key with the required method name into your API description.
+In case you need to mimic endpoints which respond to requests other than GET then make sure to add an `http_method` key with the required method name into your API description.
 
 ```json
 {
@@ -136,6 +135,28 @@ In case you need to mimic endpoints which respond to requests other than GET the
 ```
 
 Currently supported HTTP methods are: `OPTIONS`, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, default is `GET`. Please open an issue if you think there should be others added.
+
+#### Emulate unexpected responses
+Sometimes you need to ensure that your application handles API errors correctly in which case you can add a `response_code_probabilities` field with a map of response codes to probabilities.
+```json
+{
+  "endpoint": "test",
+  "response_code_probabilities": {
+    "404": 10,
+    "503": 5,
+    "418": 1
+  },
+  "payload": {
+    "name: first_name": "anton"
+  }
+}
+```
+
+With the above configuration there's a 84% chance to get a `200 OK` response.
+The server will respond with `404 Not Found` about 1 out of 10 times and with `503 Service Unavailable` 1 out of 20 times.
+There's also a 1% chance for the server to claim to be a [Teapot](https://tools.ietf.org/html/rfc2324).
+
+**Note**: JSON keys must be strings, providing your response codes as integers will not work!
 
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
