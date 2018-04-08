@@ -7,7 +7,7 @@ This is experimental, so take it with a grain of salt.
 # Motivation
 I got bored with hardcoding the sample json api response in tests. If you know golang, you can benefit by using the library, I have included a router that you can use to run disposable servers in your tests.
 
-# Instalation
+# Installation
 
 You can download the binaries for your respective operating system  [Download apidemic](https://github.com/gernest/apidemic/releases/latest)
 
@@ -60,7 +60,7 @@ Lets say you expect a response like this
 ```
 
 
-If you have alreasy started apidemic server you can register that response by making a POST request to the `/register` path. Passing the json body of the form.
+If you have already started apidemic server you can register that response by making a POST request to the `/register` path. Passing the json body of the form.
 
 ```json
 {
@@ -90,27 +90,26 @@ If you have alreasy started apidemic server you can register that response by ma
       "city:city": "Stockholm"
     },
     "country": {
-      "name:ountry": "Sweden"
+      "name:country": "Sweden"
     }
   }
-
 }
 ```
 
-See the annotation tags on the payload. Example if I want to generate full name  for field name I will just do `"name:full_name"`.
+See the annotation tags on the payload. Example if I want to generate full name for a field name I will just add `"name:full_name"`.
 
-I f your post request is submitted you are good to ask for the response with fake values. Just do a get request for the endppint you registered
+Once your POST request is submitted you are good to ask for the response with fake values. Just make a GET request to the endpoint you registered.
 
-So, every GET call to `/api/test` will return the api response with fake data.
+So every GET call to `/api/test` will return the api response with fake data.
 
 # Routes 
 Apidemic server has only three http routes
 
 ### /
-This is the home path. It only renders information about the apidemic server
+This is the home path. It only renders information about the apidemic server.
 
 ### /register
-This is where you register endpoints. You POST the annotated sample json here. The request body should be a json object of signature.
+This is where you register endpoints. You POST the annotated sample JSON here. The request body should be a json object of signature.
 
 ```json
 {
@@ -120,18 +119,34 @@ This is where you register endpoints. You POST the annotated sample json here. T
 ```
 
 #### /api/{REGISTERED_ENDPOINT_GOES_HERE}
-Every GET request on this route will render a fake json object for the sample registered in this endpoint
+Every GET request on this route will render a fake JSON object for the sample registered in this endpoint.
+
+#### Other HTTP Methods
+
+In case you need to mimic endpoints which respond to requests other than GET then make sure to add a `http_method` key with the required method name into your API description.
+
+```json
+{
+  "endpoint": "test",
+  "http_method": "POST",
+  "payload": {
+    "name: first_name": "anton"
+  }
+}
+```
+
+Currently supported HTTP methods are: `OPTIONS`, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, default is `GET`. Please open an issue if you think there should be others added.
 
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
 
-You add tags to object keys. For instance if you have a json object `{ "user_name": "gernest"}`. If you want to have fake username  then you can annotate the key by addimg user_name tag like this `{ "user_name:user_name": "gernest"}`.
+You add tags to object keys. For instance let's say you have a JSON object `{ "user_name": "gernest"}`. If you want to have a fake username then you can annotate the key by adding user_name tag like this `{ "user_name:user_name": "gernest"}`.
 
-So,  json keys can be annotated by adding the `:` symbol then followed by comma separated list of tags. The firs entry after `:` is for the tag type, the following entries are in the form `key=value` which will be the extra information to fine tune your fake data. Please see the example above to see how tags are used.
+So JSON keys can be annotated by adding the `:` symbol then followed by comma separated list of tags. The first entry after `:` is for the tag type, the following entries are in the form `key=value` which will be the extra information to fine-tune your fake data. Please see the example above to see how tags are used.
 
-Apidemic comes shiped with a large number of tags, meaning it is capable to geerate a wide range of fake information.
+Apidemic comes shipped with a large number of tags, meaning it is capable to generate a wide range of fake information.
 
-These are different tags that generate different fake data
+These are currently available tags to generate different fake data:
 
  Tag | Details( data generated)
 ------|--------
@@ -221,7 +236,7 @@ brand | brand
  zip | zip 
 
 # Benchmark
-This Benchmark uses [boom](https://github.com/rakyll/boom). After registering the sample json above run the following command(Note this is just to check things out, my machine is very slow)
+This Benchmark uses [boom](https://github.com/rakyll/boom). After registering the sample json above run the following command (Note this is just to check things out, my machine is very slow)
 
 ```bash
  boom -n 1000 -c 100 http://localhost:3000/api/test
