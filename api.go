@@ -47,7 +47,7 @@ func RenderJSON(w http.ResponseWriter, code int, value interface{}) {
 	w.WriteHeader(code)
 	err := json.NewEncoder(w).Encode(value)
 	if err != nil {
-		http.Error(w, err.Error(), code)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
@@ -117,7 +117,9 @@ func DynamicEndpoint(w http.ResponseWriter, r *http.Request) {
 		RenderJSON(w, code, eVal)
 		return
 	}
-	RenderJSON(w, http.StatusNotFound, NewResponse("apidemic: "+vars["endpoint"]+" has no "+r.Method+" endpoint"))
+
+	responseText := fmt.Sprintf("apidemic: %s has no %s endpoint", vars["endpoint"], r.Method)
+	RenderJSON(w, http.StatusNotFound, NewResponse(responseText)
 }
 
 // NewResponse helper for response JSON message
