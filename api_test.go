@@ -8,11 +8,54 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestAPI(t *testing.T) {
+func TestDynamicEndpointFailsWithoutRegistration(t *testing.T) {
+	s := NewServer()
+	sample, err := ioutil.ReadFile("fixtures/sample_post_request.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out map[string]interface{}
+	err = json.NewDecoder(bytes.NewReader(sample)).Decode(&out)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w := httptest.NewRecorder()
+	req := jsonRequest("POST", "/api/test", out)
+	s.ServeHTTP(w, req)
+
+	assert.Equal(t, w.Code, http.StatusNotFound)
+}
+
+func TestDynamicEndpointWithGetRequest(t *testing.T) {
 	s := NewServer()
 	sample, err := ioutil.ReadFile("fixtures/sample_request.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out map[string]interface{}
+	err = json.NewDecoder(bytes.NewReader(sample)).Decode(&out)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w := httptest.NewRecorder()
+	req := jsonRequest("POST", "/register", out)
+	s.ServeHTTP(w, req)
+
+	w = httptest.NewRecorder()
+	req = jsonRequest("GET", "/api/test", nil)
+	s.ServeHTTP(w, req)
+	assert.Equal(t, w.Code, http.StatusOK)
+}
+
+func TestDynamicEndpointWithPostRequest(t *testing.T) {
+	s := NewServer()
+	sample, err := ioutil.ReadFile("fixtures/sample_post_request.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,9 +71,10 @@ func TestAPI(t *testing.T) {
 	s.ServeHTTP(w, req)
 
 	w = httptest.NewRecorder()
-	req = jsonRequest("GET", "/api/test", nil)
+	req = jsonRequest("POST", "/api/test", nil)
 
 	s.ServeHTTP(w, req)
+	assert.Equal(t, w.Code, http.StatusCreated)
 }
 
 func jsonRequest(method string, path string, body interface{}) *http.Request {
@@ -46,6 +90,6 @@ func jsonRequest(method string, path string, body interface{}) *http.Request {
 	if err != nil {
 		panic(err)
 	}
-	req.Header.Set("Contet-Type", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 	return req
 }
