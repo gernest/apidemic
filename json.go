@@ -418,7 +418,9 @@ func genInt(min, max int32) int32 {
 	var res int32
 	diff := max - min
 
-	if diff > 0 {
+	if diff == 0 {
+		return max
+	} else if diff > 0 {
 		res = seededRand.Int31n(diff) + min
 	} else {
 		res = (seededRand.Int31n(diff*-1) - min) * -1
