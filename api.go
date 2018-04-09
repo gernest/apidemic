@@ -12,7 +12,7 @@ import (
 )
 
 // Version is the version of apidemic. Apidemic uses semver.
-const Version = "0.3"
+const Version = "0.6"
 
 var maxItemTime = cache.DefaultExpiration
 
@@ -27,6 +27,7 @@ var allowedHttpMethods = []string{"OPTIONS", "GET", "POST", "PUT", "DELETE", "HE
 type API struct {
 	Endpoint   string                 `json:"endpoint"`
 	HTTPMethod string                 `json:"http_method"`
+	MaxCount   int32                  `json:"max_count"`
 	Payload    map[string]interface{} `json:"payload"`
 }
 
@@ -74,7 +75,7 @@ func RegisterEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	obj := NewObject()
-	err = obj.Load(a.Payload)
+	err = obj.Load(a.Payload, a.MaxCount)
 	if err != nil {
 		RenderJSON(w, http.StatusInternalServerError, NewResponse(err.Error()))
 		return

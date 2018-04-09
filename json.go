@@ -3,19 +3,25 @@ package apidemic
 import (
 	"encoding/json"
 	"io"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/icrowley/fake"
 )
 
 type Value struct {
-	Tags Tags
-	Data interface{}
+	Tags      Tags
+	Data      interface{}
+	IsArray   bool
+	MaxLength uint
 }
 
 func (v Value) Update() Value {
 	switch v.Data.(type) {
+	case bool:
+		return fakeString(&v)
 	case string:
 		return fakeString(&v)
 	case float64:
@@ -37,14 +43,20 @@ func NewValue(val interface{}) Value {
 }
 
 type Object struct {
-	Data map[string]Value
+	Data     map[string]Value
+	IsArray  bool
+	MaxCount int32
 }
 
 func NewObject() *Object {
 	return &Object{Data: make(map[string]Value)}
 }
 
-func (o *Object) Load(src map[string]interface{}) error {
+func (o *Object) Load(src map[string]interface{}, maxCount int32) error {
+	if maxCount > 0 {
+		o.IsArray = true
+		o.MaxCount = maxCount
+	}
 	for key, val := range src {
 		value := NewValue(val)
 		sections := strings.Split(key, ":")
@@ -62,6 +74,16 @@ func (o *Object) Set(key string, val Value) {
 }
 
 func (v *Object) MarshalJSON() ([]byte, error) {
+	if v.IsArray {
+		l := int(genInt(0, v.MaxCount))
+
+		vs := []map[string]Value{}
+		for i := 0; i < l; i++ {
+			vs = append(vs, v.Data)
+		}
+
+		return json.Marshal(vs)
+	}
 	return json.Marshal(v.Data)
 }
 
@@ -72,7 +94,7 @@ func parseJSONData(src io.Reader) (*Object, error) {
 		return nil, err
 	}
 	o := NewObject()
-	err = o.Load(in)
+	err = o.Load(in, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +138,7 @@ func fakeFloats(v *Value) Value {
 
 func fakeObject(v *Value) Value {
 	obj := NewObject()
-	obj.Load(v.Data.(map[string]interface{}))
+	obj.Load(v.Data.(map[string]interface{}), 0)
 	return NewValue(obj.Data)
 }
 
@@ -340,4 +362,22 @@ func genFakeData(v *Value) interface{} {
 	}
 
 	return v.Data
+}
+
+var seededRand = func() *rand.Rand {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r
+}()
+
+func genInt(min, max int32) int32 {
+	var res int32
+	diff := max - min
+
+	if diff > 0 {
+		res = seededRand.Int31n(diff) + min
+	} else {
+		res = (seededRand.Int31n(diff*-1) - min) * -1
+	}
+
+	return res
 }

@@ -137,6 +137,20 @@ In case you need to mimic endpoints which respond to requests other than GET the
 
 Currently supported HTTP methods are: `OPTIONS`, `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, default is `GET`. Please open an issue if you think there should be others added.
 
+#### List endpoints
+
+In case you need your endpoint to return an array of entities instead of a single one, just add a `max_count` key into your API description
+
+```json
+{
+  "endpoint": "test",
+  "max_count": 2,
+  "payload": {
+    "name: first_name": "anton"
+  }
+}
+```
+
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
 
