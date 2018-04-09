@@ -14,10 +14,10 @@ import (
 
 func TestDynamicEndpointFailsWithoutRegistration(t *testing.T) {
 	s := NewServer()
-	registerPayload := registerPayload(t, "fixtures/sample_request.json")
+	payload := registerPayload(t, "fixtures/sample_request.json")
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/api/test", registerPayload)
+	req := jsonRequest("POST", "/api/test", payload)
 	s.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
@@ -25,10 +25,10 @@ func TestDynamicEndpointFailsWithoutRegistration(t *testing.T) {
 
 func TestDynamicEndpointWithGetRequest(t *testing.T) {
 	s := NewServer()
-	registerPayload := registerPayload(t, "fixtures/sample_request.json")
+	payload := registerPayload(t, "fixtures/sample_request.json")
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/register", registerPayload)
+	req := jsonRequest("POST", "/register", payload)
 	s.ServeHTTP(w, req)
 
 	w = httptest.NewRecorder()
@@ -40,11 +40,11 @@ func TestDynamicEndpointWithGetRequest(t *testing.T) {
 
 func TestDynamicEndpointWithPostRequest(t *testing.T) {
 	s := NewServer()
-	registerPayload := registerPayload(t, "fixtures/sample_request.json")
-	registerPayload["http_method"] = "POST"
+	payload := registerPayload(t, "fixtures/sample_request.json")
+	payload["http_method"] = "POST"
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/register", registerPayload)
+	req := jsonRequest("POST", "/register", payload)
 	s.ServeHTTP(w, req)
 
 	w = httptest.NewRecorder()
