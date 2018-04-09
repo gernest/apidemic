@@ -14,67 +14,59 @@ import (
 
 func TestDynamicEndpointFailsWithoutRegistration(t *testing.T) {
 	s := NewServer()
-	sample, err := ioutil.ReadFile("fixtures/sample_post_request.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var out map[string]interface{}
-	err = json.NewDecoder(bytes.NewReader(sample)).Decode(&out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	payload := registerPayload(t, "fixtures/sample_request.json")
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/api/test", out)
+	req := jsonRequest("POST", "/api/test", payload)
 	s.ServeHTTP(w, req)
 
-	assert.Equal(t, w.Code, http.StatusNotFound)
+	assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
 func TestDynamicEndpointWithGetRequest(t *testing.T) {
 	s := NewServer()
-	sample, err := ioutil.ReadFile("fixtures/sample_request.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var out map[string]interface{}
-	err = json.NewDecoder(bytes.NewReader(sample)).Decode(&out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	payload := registerPayload(t, "fixtures/sample_request.json")
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/register", out)
+	req := jsonRequest("POST", "/register", payload)
 	s.ServeHTTP(w, req)
 
 	w = httptest.NewRecorder()
 	req = jsonRequest("GET", "/api/test", nil)
 	s.ServeHTTP(w, req)
-	assert.Equal(t, w.Code, http.StatusOK)
+
+	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 func TestDynamicEndpointWithPostRequest(t *testing.T) {
 	s := NewServer()
-	sample, err := ioutil.ReadFile("fixtures/sample_post_request.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var out map[string]interface{}
-	err = json.NewDecoder(bytes.NewReader(sample)).Decode(&out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	payload := registerPayload(t, "fixtures/sample_request.json")
+	payload["http_method"] = "POST"
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/register", out)
-
+	req := jsonRequest("POST", "/register", payload)
 	s.ServeHTTP(w, req)
 
 	w = httptest.NewRecorder()
 	req = jsonRequest("POST", "/api/test", nil)
 
 	s.ServeHTTP(w, req)
-	assert.Equal(t, w.Code, http.StatusCreated)
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
+
+func registerPayload(t *testing.T, fixtureFile string) map[string]interface{} {
+	content, err := ioutil.ReadFile(fixtureFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var api map[string]interface{}
+	err = json.NewDecoder(bytes.NewReader(content)).Decode(&api)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return api
 }
 
 func jsonRequest(method string, path string, body interface{}) *http.Request {
