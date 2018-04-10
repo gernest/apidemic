@@ -78,10 +78,7 @@ func TestDynamicEndpointWithForbiddenResponse(t *testing.T) {
 }
 
 func setUp() *mux.Router {
-	store = func() *cache.Cache {
-		c := cache.New(5*time.Minute, 30*time.Second)
-		return c
-	}()
+	store = cache.New(5*time.Minute, 30*time.Second)
 
 	return NewServer()
 }
