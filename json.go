@@ -2,11 +2,15 @@ package apidemic
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/icrowley/fake"
+	"github.com/satori/go.uuid"
 )
 
 type Value struct {
@@ -16,6 +20,8 @@ type Value struct {
 
 func (v Value) Update() Value {
 	switch v.Data.(type) {
+	case bool:
+		return fakeString(&v)
 	case string:
 		return fakeString(&v)
 	case float64:
@@ -38,6 +44,8 @@ func NewValue(val interface{}) Value {
 
 type Object struct {
 	Data map[string]Value
+	IsArray bool
+	MaxLength int32
 }
 
 func NewObject() *Object {
@@ -130,6 +138,8 @@ func genFakeData(v *Value) interface{} {
 		return v.Data
 	}
 	switch typ {
+	case fieldTags.Boolean:
+		return genBool()
 	case fieldTags.Brand:
 		return fake.Brand()
 	case fieldTags.Character:
@@ -161,6 +171,20 @@ func genFakeData(v *Value) interface{} {
 		fake.CurrencyCode()
 	case fieldTags.Day:
 		return fake.Day()
+	case fieldTags.Decimal:
+		min := 0
+		max := 100
+		prec := 2
+		if m, err := v.Tags.Int("min"); err == nil {
+			min = m
+		}
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		if p, err := v.Tags.Int("prec"); err == nil {
+			prec = p
+		}
+		return genDecimal(int32(min), int32(max)-1, prec)
 	case fieldTags.Digits:
 		return fake.Digits()
 	case fieldTags.DigitsN:
@@ -189,6 +213,16 @@ func genFakeData(v *Value) interface{} {
 		return fake.FemaleLastName()
 	case fieldTags.FemaleLastNamePratronymic:
 		return fake.FemalePatronymic()
+	case fieldTags.Float:
+		min := -100
+		max := 100
+		if m, err := v.Tags.Int("min"); err == nil {
+			min = m
+		}
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return genFloat(int32(min), int32(max))
 	case fieldTags.FirstName:
 		return fake.FirstName()
 	case fieldTags.FullName:
@@ -209,6 +243,16 @@ func genFakeData(v *Value) interface{} {
 		return fake.IPv4()
 	case fieldTags.Industry:
 		return fake.Industry()
+	case fieldTags.Integer:
+		min := -50
+		max := 50
+		if m, err := v.Tags.Int("min"); err == nil {
+			min = m
+		}
+		if m, err := v.Tags.Int("max"); err == nil {
+			max = m
+		}
+		return genInt(int32(min), int32(max))
 	case fieldTags.JobTitle:
 		return fake.JobTitle()
 	case fieldTags.Language:
@@ -317,6 +361,8 @@ func genFakeData(v *Value) interface{} {
 		return fake.TopLevelDomain()
 	case fieldTags.UserName:
 		return fake.UserName()
+	case fieldTags.Uuid:
+		return uuid.Must(uuid.NewV4())
 	case fieldTags.WeekDay:
 		return fake.WeekDay()
 	case fieldTags.WeekDayNum:
@@ -334,10 +380,58 @@ func genFakeData(v *Value) interface{} {
 		}
 		return fake.WordsN(max)
 	case fieldTags.Year:
-	//return fake.Year()
+		from := 1930
+		if f, err := v.Tags.Int("from"); err == nil {
+			from = f
+		}
+		to := 2050
+		if t, err := v.Tags.Int("to"); err == nil {
+			to = t
+		}
+		return fake.Year(from, to)
 	case fieldTags.Zip:
 		return fake.Zip()
 	}
 
 	return v.Data
+}
+
+var seededRand = func() *rand.Rand {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r
+}()
+
+func genBool() bool {
+	return seededRand.Float64() > 0.5
+}
+
+func genDecimal(min, max int32, prec int) string {
+	b := genInt(min, max)
+	t := fake.DigitsN(prec)
+
+	res := fmt.Sprintf("%d.%s", b, t)
+
+	return res
+}
+
+func genInt(min, max int32) int32 {
+	var res int32
+	diff := max - min
+
+	if diff == 0 {
+		return max
+	} else if diff > 0 {
+		res = seededRand.Int31n(diff) + min
+	} else {
+		res = (seededRand.Int31n(diff*-1) - min) * -1
+	}
+
+	return res
+}
+
+func genFloat(min, max int32) float64 {
+	diff := max - min
+	res := seededRand.Float64()*float64(diff) + float64(min)
+
+	return res
 }

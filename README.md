@@ -171,7 +171,8 @@ These are currently available tags to generate different fake data:
 
  Tag | Details( data generated)
 ------|--------
-brand | brand 
+ boolean | boolean
+ brand | brand
  character | character 
  characters | characters 
  characters_n | characters of maximum length n
@@ -183,7 +184,8 @@ brand | brand
  credit_card_num | credit card number 
  currency | currency 
  currency_code | currency code 
- day | day 
+ day | day
+ decimal | decimal
  digits | digits 
  digits_n | digits of maximum number n
  domain_name | domain name 
@@ -195,7 +197,8 @@ brand | brand
  female_full_name_with_prefix | female full name with prefix 
  female_full_name_with_suffix | female full name with suffix 
  female_last_name | female last name 
- female_last_name_pratronymic | female last name pratronymic 
+ female_last_name_pratronymic | female last name pratronymic
+ float | float
  first_name | first name 
  full_name | full name 
  full_name_with_prefix | full name with prefix 
@@ -203,9 +206,10 @@ brand | brand
  gender | gender 
  gender_abrev | gender abrev 
  hex_color | hex color 
- hex_color_short | hex color short 
- i_pv_4 | i pv 4 
- industry | industry 
+ hex_color_short | hex color short
+ industry | industry
+ integer | integer
+ i_pv_4 | i pv 4
  job_title | job title 
  language | language 
  last_name | last name 
@@ -246,7 +250,8 @@ brand | brand
  street_address | street address 
  title | title 
  top_level_domain | top level domain 
- user_name | user name 
+ user_name | user name
+ uuid | uuid
  week_day | week day 
  week_day_short | week day short 
  week_day_num | week day num 

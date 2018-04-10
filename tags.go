@@ -9,6 +9,7 @@ import (
 var ErrTagNotFound = errors.New("apidemic: Tag not found")
 
 var fieldTags = struct {
+	Boolean                   string
 	Brand                     string
 	Character                 string
 	Characters                string
@@ -22,6 +23,7 @@ var fieldTags = struct {
 	Currency                  string
 	CurrencyCode              string
 	Day                       string
+	Decimal                   string
 	Digits                    string
 	DigitsN                   string
 	DomainName                string
@@ -35,6 +37,7 @@ var fieldTags = struct {
 	FemaleLastName            string
 	FemaleLastNamePratronymic string
 	FirstName                 string
+	Float                     string
 	FullName                  string
 	FullNameWithPrefix        string
 	FullNameWithSuffix        string
@@ -42,8 +45,9 @@ var fieldTags = struct {
 	GenderAbrev               string
 	HexColor                  string
 	HexColorShort             string
-	IPv4                      string
 	Industry                  string
+	Integer                   string
+	IPv4                      string
 	JobTitle                  string
 	Language                  string
 	LastName                  string
@@ -85,6 +89,7 @@ var fieldTags = struct {
 	Title                     string
 	TopLevelDomain            string
 	UserName                  string
+	Uuid                      string
 	WeekDay                   string
 	WeekDayShort              string
 	WeekDayNum                string
@@ -94,27 +99,28 @@ var fieldTags = struct {
 	Year                      string
 	Zip                       string
 }{
-	"brand", "character", "characters", "characters_n",
+	"boolean", "brand", "character", "characters", "characters_n",
 	"city", "color", "company", "continent", "country",
 	"credit_card_num", "currency", "currency_code", "day",
-	"digits", "digits_n", "domain_name", "domain_zone",
+	"decimal", "digits", "digits_n", "domain_name", "domain_zone",
 	"email_address", "email_body", "female_first_name",
 	"female_full_name", "female_full_name_with_prefix",
 	"female_full_name_with_suffix", "female_last_name",
-	"female_last_name_pratronymic", "first_name", "full_name",
-	"full_name_with_prefix", "full_name_with_suffix", "gender",
-	"gender_abrev", "hex_color", "hex_color_short", "i_pv_4",
-	"industry", "job_title", "language", "last_name",
+	"female_last_name_pratronymic", "first_name", "float",
+	"full_name", "full_name_with_prefix", "full_name_with_suffix", "gender",
+	"gender_abrev", "hex_color", "hex_color_short", "industry",
+	"integer", "i_pv_4", "job_title", "language", "last_name",
 	"latitude_degrees", "latitude_direction", "latitude_minutes",
 	"latitude_seconds", "latitude", "longitude", "longitude_degrees",
 	"longitude_direction", "longitude_minutes", "longitude_seconds",
 	"male_first_name", "male_full_name_with_prefix", "male_full_name_with_suffix",
-	"male_last_name", "male_pratronymic", "model", "month",
-	"month_num", "month_short", "paragraph", "patagraphs", "patagraphs_n",
+	"male_last_name", "male_pratronymic", "model", "month", "month_num", "month_short",
+	"paragraph", "patagraphs", "patagraphs_n",
 	"password", "patronymic", "phone", "product", "product_name", "sentence",
 	"sentences", "sentences_n", "simple_pass_word", "state", "state_abbrev",
-	"street", "street_address", "title", "top_level_domain", "user_name", "week_day",
-	"week_day_short", "week_day_num", "word", "words", "words_n", "year", "zip",
+	"street", "street_address", "title", "top_level_domain", "user_name", "uuid",
+	"week_day", "week_day_short", "week_day_num", "word",
+	"words", "words_n", "year", "zip",
 }
 
 //Tags stores metadata about values
