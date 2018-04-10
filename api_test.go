@@ -65,12 +65,12 @@ func TestDynamicEndpointWithForbiddenResponse(t *testing.T) {
 	registerPayload["response_code_probabilities"] = map[string]int{"403": 100}
 
 	w := httptest.NewRecorder()
-	req := jsonRequest("POST", "/register", registerPayload)
+	req := JsonRequest("POST", "/register", registerPayload)
 	s.ServeHTTP(w, req)
 	require.Equal(t, http.StatusOK, w.Code)
 
 	w = httptest.NewRecorder()
-	req = jsonRequest("GET", "/api/test", nil)
+	req = JsonRequest("GET", "/api/test", nil)
 
 	s.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusForbidden, w.Code)
