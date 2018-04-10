@@ -43,8 +43,8 @@ func NewValue(val interface{}) Value {
 }
 
 type Object struct {
-	Data map[string]Value
-	IsArray bool
+	Data      map[string]Value
+	IsArray   bool
 	MaxLength int32
 }
 
