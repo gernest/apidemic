@@ -3,12 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 
 	"github.com/codegangsta/cli"
 	"github.com/gernest/apidemic"
@@ -20,7 +20,12 @@ func server(ctx *cli.Context) {
 	endpointDir := ctx.String("endpoint-dir")
 	s := apidemic.NewServer()
 
-	err := addEndpoints(s, endpointDir)
+	_, err := os.Stat(endpointDir)
+	if err != nil && endpointDir != "endpoints/" {
+		fmt.Errorf("Endpoint not found: %s", endpointDir)
+	}
+
+	err = addEndpoints(s, endpointDir)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -53,7 +58,7 @@ func main() {
 				cli.StringFlag{
 					Name:   "endpoint-dir",
 					Usage:  "Directory to scan for endpoint",
-					Value:  "./endpoints/",
+					Value:  "endpoints/",
 					EnvVar: "ENDPOINT_DIR",
 				},
 			},
@@ -91,7 +96,7 @@ func addEndpoints(s *mux.Router, endpointDir string) error {
 		log.Printf("%s is registered\n", filePath)
 
 		if w.Code != http.StatusOK {
-			return errors.New("registering " + filePath + " failed")
+			return fmt.Errorf("registering %s failed", filePath)
 		}
 	}
 

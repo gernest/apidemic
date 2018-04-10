@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// JsonRequest creates an HTTP request
 func JsonRequest(method string, path string, body interface{}) *http.Request {
 	var bEnd io.Reader
 	if body != nil {
