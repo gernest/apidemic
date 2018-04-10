@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 )
 
 // Version is the version of apidemic. Apidemic uses semver.
-const Version = "0.3"
+const Version = "0.4"
 
 var maxItemTime = cache.DefaultExpiration
 
@@ -25,9 +26,10 @@ var allowedHttpMethods = []string{"OPTIONS", "GET", "POST", "PUT", "DELETE", "HE
 
 // API is the struct for the json object that is passed to apidemic for registration.
 type API struct {
-	Endpoint   string                 `json:"endpoint"`
-	HTTPMethod string                 `json:"http_method"`
-	Payload    map[string]interface{} `json:"payload"`
+	Endpoint                  string                 `json:"endpoint"`
+	HTTPMethod                string                 `json:"http_method"`
+	ResponseCodeProbabilities map[int]int            `json:"response_code_probabilities"`
+	Payload                   map[string]interface{} `json:"payload"`
 }
 
 // Home renders hopme page. It renders a json response with information about the service.
@@ -40,9 +42,39 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// FindResponseCode helps imitating the backend responding with an error message occasionally
+// Example:
+//   {"404": 8, "403": 12, "500": 20, "503": 3}
+//   8% chance of getting 404
+//   12% chance of getting a 500 error
+//   3% chance of getting a 503 error
+//   77% chance of getting 200 OK or 201 Created depending on the HTTP method
+func FindResponseCode(responseCodeProbabilities map[int]int, method string) int {
+	sum := 0
+	r := rand.Intn(100)
+
+	for code, probability := range responseCodeProbabilities {
+		if probability+sum > r {
+			return code
+		}
+		sum = sum + probability
+	}
+
+	if method == "POST" {
+		return http.StatusCreated
+	}
+
+	return http.StatusOK
+}
+
 // RenderJSON helper for rendering JSON response, it marshals value into json and writes
 // it into w.
 func RenderJSON(w http.ResponseWriter, code int, value interface{}) {
+	if code >= 400 || code == http.StatusNoContent {
+		http.Error(w, "", code)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	err := json.NewEncoder(w).Encode(value)
@@ -68,7 +100,7 @@ func RegisterEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	eKey := getCacheKeys(a.Endpoint, httpMethod)
+	eKey, rcpKey := getCacheKeys(a.Endpoint, httpMethod)
 	if _, ok := store.Get(eKey); ok {
 		RenderJSON(w, http.StatusOK, NewResponse("endpoint already taken"))
 		return
@@ -80,13 +112,15 @@ func RegisterEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	store.Set(eKey, obj, maxItemTime)
+	store.Set(rcpKey, a.ResponseCodeProbabilities, maxItemTime)
 	RenderJSON(w, http.StatusOK, NewResponse("cool"))
 }
 
-func getCacheKeys(endpoint, httpMethod string) string {
+func getCacheKeys(endpoint, httpMethod string) (string, string) {
 	eKey := fmt.Sprintf("%s-%v-e", endpoint, httpMethod)
+	rcpKey := fmt.Sprintf("%s-%v-rcp", endpoint, httpMethod)
 
-	return eKey
+	return eKey, rcpKey
 }
 
 func getAllowedMethod(method string) (string, error) {
@@ -106,18 +140,15 @@ func getAllowedMethod(method string) (string, error) {
 // DynamicEndpoint renders registered endpoints.
 func DynamicEndpoint(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	code := http.StatusOK
 
-	eKey := getCacheKeys(vars["endpoint"], r.Method)
+	eKey, rcpKey := getCacheKeys(vars["endpoint"], r.Method)
 	if eVal, ok := store.Get(eKey); ok {
-		if r.Method == "POST" {
-			code = http.StatusCreated
+		if rcpVal, ok := store.Get(rcpKey); ok {
+			code := FindResponseCode(rcpVal.(map[int]int), r.Method)
+			RenderJSON(w, code, eVal)
+			return
 		}
-
-		RenderJSON(w, code, eVal)
-		return
 	}
-
 	responseText := fmt.Sprintf("apidemic: %s has no %s endpoint", vars["endpoint"], r.Method)
 	RenderJSON(w, http.StatusNotFound, NewResponse(responseText))
 }
