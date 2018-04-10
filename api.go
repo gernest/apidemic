@@ -13,7 +13,7 @@ import (
 )
 
 // Version is the version of apidemic. Apidemic uses semver.
-const Version = "0.4"
+const Version = "0.5"
 
 var maxItemTime = cache.DefaultExpiration
 
@@ -149,6 +149,7 @@ func DynamicEndpoint(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+
 	responseText := fmt.Sprintf("apidemic: %s has no %s endpoint", vars["endpoint"], r.Method)
 	RenderJSON(w, http.StatusNotFound, NewResponse(responseText))
 }
