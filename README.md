@@ -158,6 +158,9 @@ There's also a 1% chance for the server to claim to be a [Teapot](https://tools.
 
 **Note**: JSON keys must be strings, providing your response codes as integers will not work!
 
+### Registering endpoints automatically
+The service will scan the `endpoints/` directory relative to the currenct working directory on startup. You can change the directory to be scanned by adding a flag `--endpoint-dir=ENDPOINT_DIR`.
+
 # Tags
 Apidemic uses tags to annotate what kind of fake data to generate and also control different requrements of fake data.
 
