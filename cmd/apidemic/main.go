@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 
 	"github.com/codegangsta/cli"
 	"github.com/gernest/apidemic"
@@ -22,7 +23,7 @@ func server(ctx *cli.Context) {
 
 	_, err := os.Stat(endpointDir)
 	if err != nil && endpointDir != "endpoints/" {
-		fmt.Errorf("Endpoint not found: %s", endpointDir)
+		fmt.Errorf("endpoint not found: %s", endpointDir)
 	}
 
 	err = addEndpoints(s, endpointDir)
@@ -82,9 +83,9 @@ func addEndpoints(s *mux.Router, endpointDir string) error {
 			continue
 		}
 
-		filePath := endpointDir + file.Name()
+		fullPath := filepath.Join(endpointDir ,file.Name())
 
-		registerPayload, err = getRegisterPayload(filePath)
+		registerPayload, err = getRegisterPayload(fullPath)
 		if err != nil {
 			return err
 		}
@@ -93,10 +94,10 @@ func addEndpoints(s *mux.Router, endpointDir string) error {
 		req := apidemic.JsonRequest("POST", "/register", registerPayload)
 		s.ServeHTTP(w, req)
 
-		log.Printf("%s is registered\n", filePath)
+		log.Printf("%s is registered\n", fullPath)
 
 		if w.Code != http.StatusOK {
-			return fmt.Errorf("registering %s failed", filePath)
+			return fmt.Errorf("registering %s failed", fullPath)
 		}
 	}
 
